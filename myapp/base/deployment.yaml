@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment
+  labels:
+    app: myapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+      - name: myapp
+        image: nginx
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: secret-volume
+          mountPath: '/home/dev'
+          readOnly: true            
+      volumes:
+      - name: secret-volume
+        secret:
+          secretName: secretfile
